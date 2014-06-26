@@ -1,0 +1,69 @@
+* {
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+body {
+	background-color: black;
+	font-family: 'Oxygen Mono', sans-serif;
+	background: url(http://1.bp.blogspot.com/-EBHneMtOVy8/T192sEdhsPI/AAAAAAAAAOM/HpGo01exyPc/s1600/scrabble+board+in+volos3.jpg);
+}
+
+.container {
+	width: 800px;
+	margin: 30px auto;
+	padding: 20px;
+	background-color: white;
+}
+
+.clear {clear: both;}
+
+/* Scrabble */
+#compile {
+	margin: 20px 0;
+	border: 2px solid red;
+	padding:10px;
+	height: 100px;
+}
+
+#result {
+	margin: 20px 0;
+	clear: both;
+	font-size: 48px;
+	color: red;
+}
+
+#tiles {
+	clear: both;
+}
+
+.scrabble-tile {
+	width: 45px;
+	height: 50px;
+	margin: 6px;
+	text-align: center;
+	line-height: 50px;
+	font-size: 36px;
+	text-transform: uppercase;
+	background-color: #E3CFA3;
+	box-shadow: 5px 5px 10px #888888;
+	border-radius: 2px;
+	-moz-border-radius: 2x;
+	cursor: pointer;
+	float: left;
+}
+
+.scrabble-tile:hover {
+	text-shadow:-2px 2px 2px white;
+}
+
+.disabled, .disabled-temp {
+	background-color:#7F6835;
+	cursor: none;
+}
+
+.disabled:hover, .disabled-temp:hover {
+	text-shadow:none;
+}
+

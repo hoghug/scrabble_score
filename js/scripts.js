@@ -13,12 +13,16 @@ $(document).ready(function() {
       10 : ['q','z']
     },
 
+    letterCounts: {
+      'a':9,'b':2,'c':2,'d':4,'e':12,'f':2,'g':3,'h':2,'i':9,'j':1,'k':1,'l':4,'m':2,'n':6,'o':8,'p':2,'r':6,'s':4,'t':6,'u':4,'v':2,'w':2,'x':1,'y':2,'z':1
+    },
+
     init : function(){
       scrabble.buildLetterTiles();
       scrabble.pileTileClick();
       scrabble.undoLastTile();
       scrabble.clearTiles();
-      scrabble.sendCompiledWord();
+      scrabble.compileWord();
     }, 
 
     buildLetterTiles : function(){
@@ -48,40 +52,62 @@ $(document).ready(function() {
       });
     },
 
-    sendCompiledWord : function(){
+    compileWord : function(){
       $('#submit').on('click', function() {
         var compiledWord = '';
         $('#compile .scrabble-tile').each(function(index, value) {
           compiledWord += $(this).text();
         });
 
-        wordnikData = $.ajax({
-          dataType: 'json',
-          url: 'http://api.wordnik.com:80/v4/word.json/' + compiledWord + '/definitions?limit=1&includeRelated=false&sourceDictionaries=webster&useCanonical=false&includeTags=false&api_key=a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5'
-        });
-
-        debugger;
-        console.log(wordnikData.responseText)
-        var parsed = JSON.parse(wordnikData.responseText);
-
-        if (parsed.length > 0) {
-          alert('all good')
-
-        } else {
-          return 'Not a valid word'
-        }
-
+        scrabble.getWordScore(compiledWord);
       });
+        // wordnikData = $.ajax({
+        //   dataType: 'json',
+        //   url: 'http://api.wordnik.com:80/v4/word.json/' + compiledWord + '/definitions?limit=1&includeRelated=false&sourceDictionaries=webster&useCanonical=false&includeTags=false&api_key=6c2c5e557ba90d858500c02f39d09a7da66abfc0029dd63b9'
+        // });
+
+        // // debugger;
+        // // console.log(wordnikData.responseText)
+        // var parsed = JSON.parse(wordnikData.responseText);
+
+        // if (parsed.length > 0) {
+        //   alert('all good')
+
+        // } else {
+        //   return 'Not a valid word'
+        // }
+      
     },
 
-    getWordScore : function(){
-      
-        var compiledWord = '';
-        $('#compile .scrabble-tile').each(function(index, value) {
-          compiledWord += $(this).attr('data-letter');
+    getWordScore : function(word){
+
+      var wordArray = word.toLowerCase().split('');
+      var scoreValues = Object.keys(scrabble.letterScores);
+      var wordScore = 0;
+
+      for (var x = 0; x < wordArray.length; x++) {
+        // console.log(wordArray[x])
+        scoreValues.forEach(function(key){
+          // console.log(key)
+
+          // debugger;
+          if ( scrabble.letterScores[key].indexOf(wordArray[x]) > -1 ) {
+            wordScore += parseInt(key);
+          }
+
         });
 
-        var myPoints = scrabbleScore(compiledWord);
+      }
+
+      console.log(wordScore);
+      
+    },
+
+
+
+    displayScore : function(word){
+
+        var myPoints = scrabbleScore(word);
         $('#result').text('Your Points: ' + myPoints);
 
         $('#compile').empty();
